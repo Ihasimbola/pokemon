@@ -66,5 +66,15 @@ export class PokemonController {
 		}
 	}
 
-	static async searchPokemon(req: Request, res: Response) {}
+	static async searchPokemon(req: Request, res: Response) {
+		try {
+			const { query } = req.query;
+			const pokemon = await PokemonController.pokemonService.searchPokemon(
+				query as string
+			);
+			return res.json(pokemon);
+		} catch (error) {
+			throw new Error('Error releasing pokemon ' + error);
+		}
+	}
 }
