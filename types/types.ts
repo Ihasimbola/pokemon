@@ -40,3 +40,8 @@ export interface ITopic {
   isDone: boolean;
   count?: number;
 }
+
+export interface IQuery {
+  sort: string;
+  filter: string;
+}
