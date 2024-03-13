@@ -5,6 +5,10 @@ import { PokemonController } from "../controllers/pokemonController";
 const router = express.Router();
 
 router.get("/", [verifyToken, PokemonController.getAll]);
+
+// Get Pokemon By ID
+router.get("/detail/:id", [verifyToken, PokemonController.getPokemonById]);
+
 router.post("/catch/:id", [verifyToken, PokemonController.catch]);
 router.post("/release/:id", [verifyToken, PokemonController.release]);
 

@@ -54,4 +54,16 @@ export class PokemonController {
       throw new Error("Error releasing pokemon " + error);
     }
   }
+
+  static async getPokemonById(req: Request, res : Response) {
+    const pokemonService = new PokemonService();
+    try {
+        const pokemonId = parseInt(req.params.id);
+        const pokemon = await pokemonService.getById(pokemonId)
+        return res.json(pokemon);
+      } catch (error) {
+        throw new Error("Error releasing pokemon " + error);
+      }
+
+  }
 }
