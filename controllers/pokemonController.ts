@@ -3,12 +3,12 @@ import Users from "../entity/userEntity";
 import PokemonService from "../services/pokemonService";
 
 export class PokemonController {
-  static pokemonService: PokemonService = new PokemonService();
-
+  static pokemonService = new PokemonService();
   static async getAll(req: Request, res: Response) {
     try {
-      // const data = await pokemonService.getAll(req.query.page?.toString());
-      const data = await PokemonController.pokemonService.getAll();
+      const data = await PokemonController.pokemonService.getAll(
+        req.query.page?.toString()
+      );
       return res.status(200).json({
         data,
       });

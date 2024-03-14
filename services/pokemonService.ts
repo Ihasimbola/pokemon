@@ -22,17 +22,26 @@ class PokemonService {
     });
   }
   async getAll(pageNumber?: string) {
+    let pokemons: any = [];
     try {
       if (pageNumber) {
         const offset = +pageNumber * 20 - 20;
-        console.log(offset);
-        const res = await fetch(
-          `${this.pokeApi}/pokemon?offset=${offset}&limit=20`
-        );
-        return await res.json();
+        pokemons = await (
+          await fetch(`${this.pokeApi}/pokemon?offset=${offset}&limit=20`)
+        ).json();
+      } else {
+        pokemons = await (await fetch(`${this.pokeApi}/pokemon`)).json();
       }
-      const res = await fetch(`${this.pokeApi}/pokemon`);
-      return await res.json();
+
+      for (let i = 0; i < pokemons.results.length; ++i) {
+        const pokemon: any = await (
+          await fetch(`${pokemons.results[i].url}`)
+        ).json();
+
+        pokemons.results[i]["sprites"] = pokemon.sprites;
+      }
+
+      return pokemons;
     } catch (error: any) {
       throw new Error("Error getting all pokemon " + error.message);
     }
