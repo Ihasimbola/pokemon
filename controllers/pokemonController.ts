@@ -57,10 +57,22 @@ export class PokemonController {
     }
   }
 
+  static async getTypes(req: Request, res: Response) {
+    const typeId = req.params.typeId?.toString() || "";
+    try {
+      const data = await PokemonController.pokemonService.getTypes(typeId);
+      return res.status(200).json({
+        data,
+      });
+    } catch (error: any) {
+      throw new Error("Error getting all pokemon types " + error.message);
+    }
+  }
+
   static async getPokemonById(req: Request, res: Response) {
     try {
       const pokemonId = parseInt(req.params.id);
-      const pokemon = await this.pokemonService.getById(pokemonId);
+      const pokemon = await PokemonController.pokemonService.getById(pokemonId);
       return res.json(pokemon);
     } catch (error) {
       throw new Error("Error releasing pokemon " + error);
@@ -80,11 +92,14 @@ export class PokemonController {
   }
   static async filterPokemon(req: Request, res: Response) {
     try {
-      const pokemonService = new PokemonService();
+      // const pokemonService = new PokemonService();
       const filter = req.query.filter?.toString()!;
       const sort = req.query.sort?.toString() || "";
       const userId = req.body.userId;
-      const data = await pokemonService.filterPokemon({ filter, sort }, userId);
+      const data = await PokemonController.pokemonService.filterPokemon(
+        { filter, sort },
+        userId
+      );
       return res.status(200).json({
         data,
       });

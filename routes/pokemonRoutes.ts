@@ -7,6 +7,8 @@ const router = express.Router();
 router.get("/", [verifyToken, PokemonController.getAll]);
 router.get("/", [verifyToken, PokemonController.getAll]);
 router.get("/list", [verifyToken, PokemonController.filterPokemon]);
+router.get("/type", [verifyToken, PokemonController.getTypes]);
+router.get("/type/:typeId", [verifyToken, PokemonController.getTypes]);
 
 // Get Pokemon By ID
 router.get("/detail/:id", [verifyToken, PokemonController.getPokemonById]);

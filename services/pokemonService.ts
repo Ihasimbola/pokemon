@@ -40,29 +40,24 @@ class PokemonService {
 
   async getById(pokemonId: Number) {
     try {
-      const res = await fetch(`${this.pokeApi}/ability/${pokemonId}`);
+      const res = await fetch(`${this.pokeApi}/pokemon/${pokemonId}`);
       return await res.json();
     } catch (error: any) {
       throw new Error("Error getting all pokemon " + error.message);
     }
-    const res = await fetch(`${this.pokeApi}/ability/${pokemonId}`);
-    return await res.json();
   }
   catch(error: any) {
     throw new Error("Error getting all pokemon " + error.message);
   }
 
-  async getTypes() {
+  async getTypes(typeId?: string | undefined) {
     try {
-      const types = [];
-      for (let i = 0; i < 19; ++i) {
-        const res = await fetch(`${this.pokeApi}/type/${i}`);
-        const data = await res.json();
-        if (data) {
-          types.push(data);
-        }
+      if (typeId) {
+        const types = await fetch(`${this.pokeApi}/type/${typeId}`);
+        return await types.json();
       }
-      return types;
+      const types = await fetch(`${this.pokeApi}/type`);
+      return await types.json();
     } catch (error: any) {
       throw new Error("Error getting all pokemon types " + error.message);
     }
@@ -78,7 +73,14 @@ class PokemonService {
         const pokemons = [];
         for (let i = 0; i < ids.length; ++i) {
           const pokemon = await this.getById(+ids[i]);
-          pokemons.push(pokemon);
+          const { id, name, abilities, sprites, types } = pokemon;
+          console.log(pokemon);
+          pokemons.push({
+            id,
+            name,
+            types,
+            sprites,
+          });
         }
 
         if (sort && sort.includes("-")) {
