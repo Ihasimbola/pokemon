@@ -82,10 +82,12 @@ export class PokemonController {
     try {
       const pokemonService = new PokemonService();
       const filter = req.query.filter?.toString()!;
+      const sort = req.query.sort?.toString() || "";
       const userId = req.body.userId;
-      const sort = req.query.sort?.toString();
-      pokemonService.filterPokemon({ sort, filter }, userId);
-      return res.status(200).json([]);
+      const data = await pokemonService.filterPokemon({ filter, sort }, userId);
+      return res.status(200).json({
+        data,
+      });
     } catch (error) {
       throw new Error("Error filtering pokemon " + error);
     }
