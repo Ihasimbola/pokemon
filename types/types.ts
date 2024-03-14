@@ -42,6 +42,6 @@ export interface ITopic {
 }
 
 export interface IQuery {
-  sort: string;
-  filter: string;
+  sort?: string;
+  filter?: string;
 }

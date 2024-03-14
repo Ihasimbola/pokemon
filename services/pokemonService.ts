@@ -45,6 +45,11 @@ class PokemonService {
     } catch (error: any) {
       throw new Error("Error getting all pokemon " + error.message);
     }
+    const res = await fetch(`${this.pokeApi}/ability/${pokemonId}`);
+    return await res.json();
+  }
+  catch(error: any) {
+    throw new Error("Error getting all pokemon " + error.message);
   }
 
   async getTypes() {
@@ -81,7 +86,6 @@ class PokemonService {
         }
         return this.sort(pokemons);
       }
-      // const res = await fetch(`${this.pokeApi}/pokemon/${filter}`);
     } catch (error: any) {
       throw new Error("Error filtering pokemon " + error.message);
     }

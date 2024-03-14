@@ -60,7 +60,7 @@ export class PokemonController {
   static async getPokemonById(req: Request, res: Response) {
     try {
       const pokemonId = parseInt(req.params.id);
-      const pokemon = await PokemonController.pokemonService.getById(pokemonId);
+      const pokemon = await this.pokemonService.getById(pokemonId);
       return res.json(pokemon);
     } catch (error) {
       throw new Error("Error releasing pokemon " + error);
@@ -76,6 +76,18 @@ export class PokemonController {
       return res.json(pokemon);
     } catch (error) {
       throw new Error("Error releasing pokemon " + error);
+    }
+  }
+  static async filterPokemon(req: Request, res: Response) {
+    try {
+      const pokemonService = new PokemonService();
+      const filter = req.query.filter?.toString()!;
+      const userId = req.body.userId;
+      const sort = req.query.sort?.toString();
+      pokemonService.filterPokemon({ sort, filter }, userId);
+      return res.status(200).json([]);
+    } catch (error) {
+      throw new Error("Error filtering pokemon " + error);
     }
   }
 }
