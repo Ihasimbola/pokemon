@@ -62,7 +62,10 @@ class PokemonService {
         pokemons.results[i]["sprites"] = pokemon.sprites;
       }
 
-      pokemons.results = this.searchIfCatchedPokemon(userId, pokemons.results);
+      pokemons.results = await this.searchIfCatchedPokemon(
+        userId,
+        pokemons.results
+      );
 
       return pokemons;
     } catch (error: any) {
