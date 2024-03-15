@@ -6,6 +6,12 @@ import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
 export class UserController {
   static async createUser(req: Request, res: Response, next: NextFunction) {
     try {
+      if (!(req.body.username && req.body.email && req.body.password)) {
+        return res.status(400).json({
+          message: "Verify your credentials",
+        });
+      }
+
       const doc = await Users.create(req.body);
 
       const accessToken = generateAccessToken({
