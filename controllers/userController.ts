@@ -24,8 +24,8 @@ export class UserController {
         token: await accessToken,
         refreshToken: await refreshToken,
       });
-    } catch (err) {
-      throw Error("Error creating user" + err);
+    } catch (err: any) {
+      return next(err.stack);
     }
   }
 
@@ -55,9 +55,7 @@ export class UserController {
       }
     } catch (err: any) {
       console.log("Error authenticating user" + err);
-      res.status(401).json({
-        message: err.message,
-      });
+      return next(err.stack);
     }
   }
 }
