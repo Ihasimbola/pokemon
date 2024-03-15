@@ -62,9 +62,9 @@ class PokemonService {
         pokemons.results[i]["sprites"] = pokemon.sprites;
       }
 
-      const data = this.searchIfCatchedPokemon(userId, pokemons.results);
+      pokemons.results = this.searchIfCatchedPokemon(userId, pokemons.results);
 
-      return data;
+      return pokemons;
     } catch (error: any) {
       throw new Error("Error getting all pokemon " + error.message);
     }
