@@ -77,7 +77,6 @@ class PokemonService {
     try {
       const res = await fetch(`${this.pokeApi}/pokemon/${pokemonId}`);
       const data = await res.json();
-      console.log(data);
       return data;
     } catch (error: any) {
       throw new Error("Error getting all pokemon " + error.message);
@@ -111,7 +110,6 @@ class PokemonService {
         for (let i = 0; i < ids.length; ++i) {
           const pokemon = await this.getById(+ids[i]);
           const { id, name, abilities, sprites, types } = pokemon;
-          console.log(pokemon);
           pokemons.push({
             id,
             name,
