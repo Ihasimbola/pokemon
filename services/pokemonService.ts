@@ -37,7 +37,7 @@ class PokemonService {
         } else {
           pokemons[i]["isCatched"] = false;
         }
-        pokemons[i]["id"] = id;
+        pokemons[i]["id"] = +id;
       }
       return pokemons;
     } catch (error) {
