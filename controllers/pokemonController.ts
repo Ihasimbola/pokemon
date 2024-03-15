@@ -7,6 +7,7 @@ export class PokemonController {
   static async getAll(req: Request, res: Response) {
     try {
       const data = await PokemonController.pokemonService.getAll(
+        req.body.userId,
         req.query.page?.toString()
       );
       return res.status(200).json({
