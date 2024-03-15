@@ -31,7 +31,7 @@ export class UserController {
         refreshToken: await refreshToken,
       });
     } catch (err: any) {
-      return next(err.stack);
+      return next(err);
     }
   }
 
@@ -61,7 +61,7 @@ export class UserController {
       }
     } catch (err: any) {
       console.log("Error authenticating user" + err);
-      return next(err.stack);
+      return next(err);
     }
   }
 }
