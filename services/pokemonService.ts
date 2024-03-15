@@ -27,15 +27,17 @@ class PokemonService {
     pokemons: Array<any>
   ) {
     try {
+      let id = "";
       const user = await Users.findById(userId).lean().select("cachedPokemon");
       for (let i = 0; i < pokemons.length; ++i) {
         const splittedUrl = pokemons[i].url.split("/");
-        const id = splittedUrl[splittedUrl.length - 2];
+        id = splittedUrl[splittedUrl.length - 2];
         if (user?.cachedPokemon?.includes(id)) {
           pokemons[i]["isCatched"] = true;
         } else {
           pokemons[i]["isCatched"] = false;
         }
+        pokemons[i]["id"] = id;
       }
       return pokemons;
     } catch (error) {
@@ -69,7 +71,7 @@ class PokemonService {
 
       return pokemons;
     } catch (error: any) {
-      throw new Error("Error getting all pokemon " + error.message);
+      throw new Error(error.stack);
     }
   }
 
@@ -79,11 +81,8 @@ class PokemonService {
       const data = await res.json();
       return data;
     } catch (error: any) {
-      throw new Error("Error getting all pokemon " + error.message);
+      throw new Error(error.stack);
     }
-  }
-  catch(error: any) {
-    throw new Error("Error getting all pokemon " + error.message);
   }
 
   async getTypes(typeId?: string | undefined) {
@@ -95,7 +94,7 @@ class PokemonService {
       const types = await fetch(`${this.pokeApi}/type`);
       return await types.json();
     } catch (error: any) {
-      throw new Error("Error getting all pokemon types " + error.message);
+      throw new Error(error.stack);
     }
   }
 
@@ -124,7 +123,7 @@ class PokemonService {
         return this.sort(pokemons);
       }
     } catch (error: any) {
-      throw new Error("Error filtering pokemon " + error.message);
+      throw new Error(error.stack);
     }
   }
 
@@ -133,7 +132,7 @@ class PokemonService {
       const res = await fetch(`${this.pokeApi}/pokemon/${pokemonName}`);
       return await res.json();
     } catch (error: any) {
-      throw new Error("Error getting all pokemon " + error.message);
+      throw new Error(error.stack);
     }
   }
 }

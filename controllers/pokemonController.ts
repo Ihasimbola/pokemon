@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import Users from "../entity/userEntity";
 import PokemonService from "../services/pokemonService";
 
 export class PokemonController {
   static pokemonService = new PokemonService();
-  static async getAll(req: Request, res: Response) {
+  static async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await PokemonController.pokemonService.getAll(
         req.body.userId,
@@ -14,10 +14,10 @@ export class PokemonController {
         data,
       });
     } catch (error: any) {
-      throw new Error("Error getting all pokemon " + error.message);
+      return next(error);
     }
   }
-  static async catch(req: Request, res: Response) {
+  static async catch(req: Request, res: Response, next: NextFunction) {
     try {
       const pokemonId = req.params.id;
       const user = await Users.findById(req.body.userId);
@@ -35,11 +35,11 @@ export class PokemonController {
       user?.save();
       return res.status(200).json({ message: "Catched" });
     } catch (error: any) {
-      throw new Error("Error catching pokemon " + error.message);
+      return next(error);
     }
   }
 
-  static async release(req: Request, res: Response) {
+  static async release(req: Request, res: Response, next: NextFunction) {
     try {
       const pokemonId = req.params.id;
       const user = await Users.findById(req.body.userId);
@@ -54,11 +54,11 @@ export class PokemonController {
       }
       return;
     } catch (error) {
-      throw new Error("Error releasing pokemon " + error);
+      return next(error);
     }
   }
 
-  static async getTypes(req: Request, res: Response) {
+  static async getTypes(req: Request, res: Response, next: NextFunction) {
     const typeId = req.params.typeId?.toString() || "";
     try {
       const data = await PokemonController.pokemonService.getTypes(typeId);
@@ -66,21 +66,21 @@ export class PokemonController {
         data,
       });
     } catch (error: any) {
-      throw new Error("Error getting all pokemon types " + error.message);
+      return next(error);
     }
   }
 
-  static async getPokemonById(req: Request, res: Response) {
+  static async getPokemonById(req: Request, res: Response, next: NextFunction) {
     try {
       const pokemonId = parseInt(req.params.id);
       const pokemon = await PokemonController.pokemonService.getById(pokemonId);
       return res.json(pokemon);
     } catch (error) {
-      throw new Error("Error releasing pokemon " + error);
+      return next(error);
     }
   }
 
-  static async searchPokemon(req: Request, res: Response) {
+  static async searchPokemon(req: Request, res: Response, next: NextFunction) {
     try {
       const { query } = req.query;
       const pokemon = await PokemonController.pokemonService.searchPokemon(
@@ -88,10 +88,10 @@ export class PokemonController {
       );
       return res.json(pokemon);
     } catch (error) {
-      throw new Error("Error releasing pokemon " + error);
+      return next(error);
     }
   }
-  static async filterPokemon(req: Request, res: Response) {
+  static async filterPokemon(req: Request, res: Response, next: NextFunction) {
     try {
       // const pokemonService = new PokemonService();
       const filter = req.query.filter?.toString()!;
@@ -105,7 +105,7 @@ export class PokemonController {
         data,
       });
     } catch (error) {
-      throw new Error("Error filtering pokemon " + error);
+      return next(error);
     }
   }
 }

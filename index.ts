@@ -68,6 +68,18 @@ app.use("/api", routes);
 //   }
 // );
 
+app.use(function (
+  error: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  console.warn("Internal server error encounterd " + error.message);
+  return res.status(500).json({
+    message: error.message,
+  });
+});
+
 app.listen(app.get("PORT"), () =>
   console.log("The server is listening at port ", app.get("PORT"))
 );
